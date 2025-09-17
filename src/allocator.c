@@ -44,6 +44,13 @@ __default_deallocate(void * pointer, void * state)
   free(pointer);
 }
 
+static void
+__default_deallocate_with_size(void * pointer, size_t size, void * state)
+{
+  RCUTILS_UNUSED(state);
+  free(pointer);
+}
+
 static void *
 __default_reallocate(void * pointer, size_t size, void * state)
 {
@@ -75,6 +82,7 @@ rcutils_get_default_allocator(void)
   static rcutils_allocator_t default_allocator = {
     .allocate = __default_allocate,
     .deallocate = __default_deallocate,
+    .deallocate_with_size = __default_deallocate_with_size,
     .reallocate = __default_reallocate,
     .zero_allocate = __default_zero_allocate,
     .state = NULL,
@@ -89,6 +97,7 @@ rcutils_allocator_is_valid(const rcutils_allocator_t * allocator)
     NULL == allocator ||
     NULL == allocator->allocate ||
     NULL == allocator->deallocate ||
+    NULL == allocator->deallocate_with_size ||
     NULL == allocator->zero_allocate ||
     NULL == allocator->reallocate)
   {

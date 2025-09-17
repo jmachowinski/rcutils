@@ -52,6 +52,8 @@ typedef struct rcutils_allocator_s
   /// Deallocate previously allocated memory, mimicking free().
   /** Also takes the `state` pointer. */
   void (* deallocate)(void * pointer, void * state);
+
+  void (* deallocate_with_size)(void * pointer, size_t size, void * state);
   /// Reallocate if possible, otherwise it deallocates and allocates.
   /**
    * Also takes the `state` pointer.
